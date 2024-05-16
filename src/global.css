@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Hardcoded height/width values */
+  :root {
+    --topbar-height: 64px;
+    --editor-topbar-height: 56px;
+    --editor-aside-width: 320px;
+    --editor-height: calc(
+      calc(100vh - calc(var(--editor-topbar-height) + var(--topbar-height))) - 6px
+    );
+
+    --font-sans: 'Geist';
+    --font-mono: 'Geist Mono';
+  }
+
+  :root {
+    --background: theme('colors.white');
+    --foreground: theme('colors.gray.700');
+    --muted: 210 17% 93%;
+    --muted-foreground: theme('colors.foreground');
+    --border: theme('colors.secondary.200');
+  }
+
+  .dark {
+    --background: theme('colors.slate.950');
+    --foreground: theme('colors.white');
+    --muted: 210 15% 18%;
+    --muted-foreground: theme('colors.foreground');
+    --border: theme('colors.secondary.800');
+  }
+}
+
+@font-face {
+  font-family: 'Geist';
+  font-display: swap;
+  src: url('/fonts/Geist.ttf') format('truetype');
+}
+
+html {
+  color: var(--foreground);
+  stroke: var(--foreground);
+}

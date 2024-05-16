@@ -48,5 +48,12 @@
     "vite": "5.2.11",
     "vitest": "1.6.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@supabase/ssr": "0.3.0",
+    "@supabase/supabase-js": "2.43.2",
+    "@tanstack/svelte-query": "5.36.1",
+    "@tanstack/svelte-query-devtools": "5.36.1",
+    "lucide-svelte": "0.378.0"
+  }
 }
