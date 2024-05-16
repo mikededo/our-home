@@ -6,34 +6,43 @@ export type Database = {
       house: {
         Row: {
           id: number;
-          location: string | null;
+          j_rating: number | null;
+          m_rating: number | null;
+          m2: number | null;
           name: string | null;
           place: string | null;
           price: number | null;
-          real_estate_agency_id: number | null;
+          real_state_agency_id: number | null;
+          website: string | null;
         };
         Insert: {
           id?: number;
-          location?: string | null;
+          j_rating?: number | null;
+          m_rating?: number | null;
+          m2?: number | null;
           name?: string | null;
           place?: string | null;
           price?: number | null;
-          real_estate_agency_id?: number | null;
+          real_state_agency_id?: number | null;
+          website?: string | null;
         };
         Update: {
           id?: number;
-          location?: string | null;
+          j_rating?: number | null;
+          m_rating?: number | null;
+          m2?: number | null;
           name?: string | null;
           place?: string | null;
           price?: number | null;
-          real_estate_agency_id?: number | null;
+          real_state_agency_id?: number | null;
+          website?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: 'house_real_estate_agency_id_fkey';
-            columns: ['real_estate_agency_id'];
+            foreignKeyName: 'house_real_state_agency_id_fkey';
+            columns: ['real_state_agency_id'];
             isOneToOne: false;
-            referencedRelation: 'real_estate_agency';
+            referencedRelation: 'real_state_agency';
             referencedColumns: ['id'];
           }
         ];
@@ -68,7 +77,7 @@ export type Database = {
           }
         ];
       };
-      real_estate_agency: {
+      real_state_agency: {
         Row: {
           id: number;
           name: string | null;

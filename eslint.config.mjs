@@ -29,7 +29,7 @@ export default tseslint.config(
     ...rest
   })),
   {
-    files: ['**/*.ts'],
+    files: ['**/*.ts', '**/*.svelte'],
     plugins: {
       '@typescript-eslint': tseslint.plugin
     },
@@ -71,6 +71,7 @@ export default tseslint.config(
       'import/no-duplicates': ['error', { considerQueryString: true }],
       'no-empty-function': ['error', { allow: ['arrowFunctions'] }],
       'no-unused-vars': 'off',
+      'no-undef': 'off',
       'sort-imports': ['error', { ignoreDeclarationSort: true }]
     }
   },
@@ -88,6 +89,7 @@ export default tseslint.config(
       }
     },
     rules: {
+      'no-undef': 'off',
       // FIXME: Temporary fix to be able to use $t
       // https://github.com/sveltejs/eslint-plugin-svelte/issues/652
       'svelte/valid-compile': 'off'
