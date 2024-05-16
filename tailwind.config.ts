@@ -128,6 +128,5 @@ export default {
       sm: 'calc(0.5rem - 4px)',
       full: '9999px'
     }
-  },
-  plugins: []
+  }
 } satisfies Config;
