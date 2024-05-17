@@ -5,7 +5,7 @@
     let { tags }: Props = $props();
 </script>
 
-{#if tags}
+{#if tags && tags.length}
     <div class="flex flex-wrap gap-1">
         {#each tags as tag (tag.id)}
             {#if tag.name}

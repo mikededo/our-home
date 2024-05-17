@@ -24,13 +24,15 @@
 
 {#snippet nav()}
     <header class="flex min-h-24 w-full flex-col items-center bg-primary p-6 text-white transition">
-        <h1 class="header text-2xl font-bold uppercase" class:collapsed={hideBar}>
-            Our future home
-        </h1>
-        <input
-            class="h-12 w-full rounded-full bg-white px-5 text-black"
-            placeholder="Search an appartment"
-        />
+        <div class="container">
+            <h1 class="header text-2xl font-bold uppercase" class:collapsed={hideBar}>
+                Our future home
+            </h1>
+            <input
+                class="h-12 w-full rounded-full bg-white px-5 text-black"
+                placeholder="Search an appartment"
+            />
+        </div>
     </header>
 {/snippet}
 

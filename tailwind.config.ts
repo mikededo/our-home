@@ -117,6 +117,7 @@ export default {
     },
     borderRadius: {
       DEFAULT: '0.5rem',
+      '2xl': '1rem',
       xl: 'calc(0.5rem + 4px)',
       lg: 'calc(0.5rem + 2px)',
       md: 'calc(0.5rem - 2px)',
