@@ -11,7 +11,7 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint . --max-warnings=0",
     "lint:fix": "prettier --write . && eslint --fix .",
-    "prepare": "husky",
+    "prepare": "husky && svelte-kit sync",
     "preview": "vite preview",
     "test": "vitest"
   },
