@@ -13,17 +13,12 @@ export default {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans]
       },
-      height: {
-        topbar: 'var(--topbar-height)',
-        'editor-topbar': 'var(--editor-topbar-height)',
-        editor: 'var(--editor-height)'
-      },
-      maxHeight: {
-        editor: 'var(--editor-height)'
-      },
-      width: {
-        'editor-aside': 'var(--editor-aside-width)'
-      },
+      // TODO: Add the header variables here
+      // height: {
+      //   topbar: 'var(--topbar-height)',
+      //   'editor-topbar': 'var(--editor-topbar-height)',
+      //   editor: 'var(--editor-height)'
+      // },
       borderColor: {
         DEFAULT: 'var(--border)'
       },
