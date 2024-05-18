@@ -11,6 +11,7 @@
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
     import { IconButton, TextIconButton } from '$lib/components';
+    import { QueryKeys, QueryParams } from '$lib/config';
     import { setSupabaseClient } from '$lib/context';
 
     import type { LayoutData } from './$types';
@@ -29,7 +30,7 @@
 
     const handleOnClick = () => {
         const params = new URLSearchParams($page.url.searchParams);
-        params.set('view', 'add-appartment');
+        params.set(QueryKeys.bottomSheet, QueryParams.bottomSheet.addAppartment);
         goto(`?${params.toString()}`);
     };
 

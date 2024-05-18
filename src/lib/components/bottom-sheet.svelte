@@ -1,35 +1,39 @@
 <script lang="ts">
     import type { Snippet } from 'svelte';
+    import { sineInOut } from 'svelte/easing';
     import { fade, slide } from 'svelte/transition';
 
     import { page } from '$app/stores';
     import { portal } from '$lib/actions';
+    import { type Params, QueryKeys, QueryParams } from '$lib/config';
 
     type Props = {
         /**
          * Param value to listen to for the "view" param
          */
-        param: string;
+        param: Params<'bottomSheet'>;
         children: Snippet;
         onBackdropClick?: () => void;
     };
     let { children, param, onBackdropClick }: Props = $props();
-    let show = $derived($page.url.searchParams.get('view') === param);
+    let show = $derived(
+        $page.url.searchParams.get(QueryKeys.bottomSheet) === QueryParams.bottomSheet[param]
+    );
 </script>
 
 {#if show}
     <div tabIndex="-1" use:portal>
         <div
             role="presentation"
-            tabIndex={-1}
+            tabIndex="-1"
             class="fixed inset-0 z-50 overflow-auto bg-gray-900/80"
-            in:fade={{ duration: 150 }}
-            out:fade={{ duration: 150, delay: 100 }}
+            in:fade={{ duration: 200 }}
+            out:fade={{ duration: 100, delay: 150 }}
             onclick={onBackdropClick}
         ></div>
         <div
-            class="overlflow-hidden fixed bottom-0 left-0 right-0 z-50 max-h-[90vh] rounded-t-2xl bg-white transition"
-            transition:slide={{ axis: 'y' }}
+            class="overlflow-hidden fixed bottom-0 left-0 right-0 z-[51] max-h-[90vh] rounded-t-2xl bg-white transition"
+            transition:slide={{ axis: 'y', duration: 200, easing: sineInOut }}
         >
             <div class="px-6 py-4">
                 {@render children()}
