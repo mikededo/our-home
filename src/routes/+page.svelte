@@ -1,10 +1,10 @@
 <script lang="ts">
     import { createQuery } from '@tanstack/svelte-query';
-    import { PlusIcon, SaveIcon, SlidersHorizontalIcon, XIcon } from 'lucide-svelte';
+    import { ListFilterIcon, SaveIcon, XIcon } from 'lucide-svelte';
 
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
-    import { AppartmentsList, BottomSheet, TextIconButton } from '$lib/components';
+    import { AppartmentsList, BottomSheet, IconButton, TextIconButton } from '$lib/components';
     import { Keys } from '$lib/config';
     import { getAppartments } from '$lib/db';
 
@@ -19,12 +19,6 @@
         queryFn: () => getAppartments(supabaseClient)
     });
 
-    const handleOnClick = () => {
-        const params = new URLSearchParams($page.url.searchParams);
-        params.set('view', 'add-appartment');
-        goto(`?${params.toString()}`);
-    };
-
     const handleOnCloseBottomSheet = () => {
         const params = new URLSearchParams($page.url.searchParams);
         params.delete('view');
@@ -32,18 +26,10 @@
     };
 </script>
 
-{#snippet add_button()}
-    <div class="fixed bottom-4 left-0 right-0">
-        <TextIconButton class="mx-auto" Icon={PlusIcon} color="primary" onclick={handleOnClick}>
-            New appartment
-        </TextIconButton>
-    </div>
-{/snippet}
-
 <div class="container px-6 pb-[68px] pt-4">
     <div class="mb-4 flex w-full items-center justify-between gap-1">
         <h2 class="text-lg font-semibold">Appartments list</h2>
-        <TextIconButton Icon={SlidersHorizontalIcon} color="secondary" class="p-1.5" />
+        <IconButton Icon={ListFilterIcon} color="muted" size="small" />
     </div>
 
     <AppartmentsList appartments={$appartmentsQuery.data} />
@@ -101,4 +87,3 @@
         </div>
     </form>
 </BottomSheet>
-{@render add_button()}

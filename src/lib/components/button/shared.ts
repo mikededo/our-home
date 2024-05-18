@@ -10,9 +10,9 @@ const variants: Record<ButtonVariant, string> = {
 };
 const colors: Record<ButtonColor, string> = {
   primary:
-    'bg-primary dark:bg-primary-800 text-white hover:bg-primary/90 hover:dark:bg-primary-800/90 stroke-white',
+    'bg-primary dark:bg-primary-800 text-white hover:bg-primary-600 hover:dark:bg-primary-900 stroke-white',
   secondary:
-    'bg-secondary dark:bg-secondary-900 text-secondary-foreground hover:bg-secondary/80 dark:hover:bg-secondary-900/90 border border-transparent hover:border-secondary-300 dark:hover:border-secondary-700',
+    'bg-secondary dark:bg-secondary-800 text-secondary-foreground hover:bg-secondary-100 dark:hover:bg-secondary-900 border border-transparent border-secondary-300 dark:border-secondary-700',
   muted: 'bg-transparent text-foreground hover:bg-muted stroke-foreground',
   destructive:
     'bg-destructive text-destructive-foreground hover:bg-destructive/90 stroke-destructive'

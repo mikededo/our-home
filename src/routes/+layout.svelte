@@ -3,8 +3,14 @@
 
     import { QueryClientProvider } from '@tanstack/svelte-query';
     import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
+    import { ArrowUp, ListFilterIcon, PlusIcon } from 'lucide-svelte';
     import type { Snippet } from 'svelte';
+    import { quadInOut } from 'svelte/easing';
+    import { fly } from 'svelte/transition';
 
+    import { goto } from '$app/navigation';
+    import { page } from '$app/stores';
+    import { IconButton, TextIconButton } from '$lib/components';
     import { setSupabaseClient } from '$lib/context';
 
     import type { LayoutData } from './$types';
@@ -20,12 +26,28 @@
         const node = e.currentTarget as HTMLElement;
         hideBar = node.scrollTop > 100;
     };
+
+    const handleOnClick = () => {
+        const params = new URLSearchParams($page.url.searchParams);
+        params.set('view', 'add-appartment');
+        goto(`?${params.toString()}`);
+    };
+
+    const handleOnScrollToTop = () => {
+        const main = document.getElementById('main-content');
+        if (main) {
+            main.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
 </script>
 
 {#snippet nav()}
     <header class="flex min-h-24 w-full flex-col items-center bg-primary p-6 text-white transition">
         <div class="container">
-            <h1 class="header text-2xl font-bold uppercase" class:collapsed={hideBar}>
+            <h1
+                class="header overflow-hidden text-2xl font-bold uppercase"
+                class:collapsed={hideBar}
+            >
                 Our future home
             </h1>
             <input
@@ -36,6 +58,34 @@
     </header>
 {/snippet}
 
+{#snippet add_button()}
+    <div class="fixed bottom-4 left-0 right-0 flex items-center justify-center gap-1">
+        {#if hideBar}
+            <div transition:fly={{ x: 50, duration: 200, easing: quadInOut }}>
+                <IconButton
+                    Icon={ListFilterIcon}
+                    onclick={handleOnClick}
+                    color="secondary"
+                    size="small"
+                />
+            </div>
+        {/if}
+        <TextIconButton Icon={PlusIcon} color="primary" onclick={handleOnClick} class="z-10">
+            New appartment
+        </TextIconButton>
+        {#if hideBar}
+            <div transition:fly={{ x: -50, duration: 200, easing: quadInOut }}>
+                <IconButton
+                    Icon={ArrowUp}
+                    onclick={handleOnScrollToTop}
+                    color="secondary"
+                    size="small"
+                />
+            </div>
+        {/if}
+    </div>
+{/snippet}
+
 <svelte:head>
     <title>🏡 Our future home</title>
 </svelte:head>
@@ -43,12 +93,14 @@
 <QueryClientProvider client={data.queryClient}>
     {@render nav()}
     <main
-        class=" overflow-y-auto"
+        id="main-content"
+        class="overflow-y-auto"
         class:h-[calc(100dvh_-_144px)]={!hideBar}
         class:h-[calc(100dvh_-_96px)]={hideBar}
         onscroll={handleOnScroll}
     >
         {@render children()}
+        {@render add_button()}
     </main>
     <SvelteQueryDevtools buttonPosition="top-right" />
 </QueryClientProvider>
