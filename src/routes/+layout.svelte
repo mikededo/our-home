@@ -13,6 +13,7 @@
     import { IconButton, TextIconButton } from '$lib/components';
     import { QueryKeys, QueryParams } from '$lib/config';
     import { setSupabaseClient } from '$lib/context';
+    import { scrollMainToTop } from '$lib/dom';
 
     import type { LayoutData } from './$types';
 
@@ -32,13 +33,6 @@
         const params = new URLSearchParams($page.url.searchParams);
         params.set(QueryKeys.bottomSheet, QueryParams.bottomSheet.addAppartment);
         goto(`?${params.toString()}`);
-    };
-
-    const handleOnScrollToTop = () => {
-        const main = document.getElementById('main-content');
-        if (main) {
-            main.scrollTo({ top: 0, behavior: 'smooth' });
-        }
     };
 </script>
 
@@ -78,7 +72,7 @@
             <div transition:fly={{ x: -50, duration: 200, easing: quadInOut }}>
                 <IconButton
                     Icon={ArrowUp}
-                    onclick={handleOnScrollToTop}
+                    onclick={scrollMainToTop}
                     color="secondary"
                     size="small"
                 />

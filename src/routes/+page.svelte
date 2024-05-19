@@ -4,7 +4,7 @@
 
     import { AppartmentsList, IconButton } from '$lib/components';
     import { Keys } from '$lib/config';
-    import { getAppartments } from '$lib/db';
+    import { getAgencies, getAppartments } from '$lib/db';
     import { AppartmentBottomSheet } from '$lib/domain';
 
     import type { PageData } from './$types';
@@ -17,6 +17,10 @@
         queryKey: Keys.Appartments,
         queryFn: () => getAppartments(supabaseClient)
     });
+    const agenciesQuery = createQuery({
+        queryKey: Keys.Agencies,
+        queryFn: () => getAgencies(supabaseClient)
+    });
 </script>
 
 <div class="container px-6 pb-[68px] pt-4">
@@ -28,4 +32,4 @@
     <AppartmentsList appartments={$appartmentsQuery.data} />
 </div>
 
-<AppartmentBottomSheet />
+<AppartmentBottomSheet agencies={$agenciesQuery.data} />

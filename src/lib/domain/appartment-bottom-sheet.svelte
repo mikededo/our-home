@@ -1,14 +1,50 @@
 <script lang="ts">
+    import { createMutation, useQueryClient } from '@tanstack/svelte-query';
     import { SaveIcon, XIcon } from 'lucide-svelte';
 
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
-    import { BottomSheet, IconButton, RatingSelector, TextIconButton } from '$lib/components';
-    import { QueryKeys } from '$lib/config';
+    import {
+        BottomSheet,
+        IconButton,
+        Input,
+        RatingSelector,
+        Select,
+        TextIconButton
+    } from '$lib/components';
+    import { Keys, QueryKeys } from '$lib/config';
+    import { getSupabaseClient } from '$lib/context';
+    import type { Agencies, AppartmentData, Appartments } from '$lib/db';
+    import { createAppartment } from '$lib/db';
+    import { scrollMainToTop } from '$lib/dom';
     import { preventDefault } from '$lib/events';
 
+    type Props = { agencies?: Agencies };
+    let { agencies = [] }: Props = $props();
+
+    const queryClient = useQueryClient();
+    const supabaseClient = getSupabaseClient();
+    let options = $derived(
+        (agencies ?? []).reduce(
+            (acc, { id, name }) => ({ ...acc, [`${id}`]: name }) as Record<string, string>,
+            {} as Record<string, string>
+        )
+    );
     let mRating = $state(0);
-    let jRating = $state(1);
+    let jRating = $state(0);
+
+    const mutation = createMutation({
+        mutationFn: async (data: AppartmentData) => await createAppartment(supabaseClient, data),
+        onSuccess: (data) => {
+            const appartments = queryClient.getQueryData<Appartments>(Keys.Appartments);
+            if (appartments && data) {
+                queryClient.setQueryData(Keys.Appartments, [...data, ...appartments]);
+            }
+
+            handleOnCloseBottomSheet();
+            scrollMainToTop();
+        }
+    });
 
     const handleOnUpdateRating = (rating: 'm' | 'j') => (i: number) => {
         if (rating === 'm') {
@@ -24,8 +60,20 @@
         goto(`?${params.toString()}`);
     };
 
-    const handleOnSubmit = () => {
-        console.log('submit');
+    const handleOnSubmit = (e: SubmitEvent) => {
+        const form = e.target as HTMLFormElement;
+        const { agency, m2, price, ...fields } = Object.fromEntries(new FormData(form)) as Record<
+            string,
+            string
+        >;
+
+        $mutation.mutate({
+            ...fields,
+            price: +price,
+            m2: +m2,
+            real_state_agency_id: +agency,
+            rating: [mRating, jRating]
+        } as AppartmentData);
     };
 </script>
 
@@ -35,47 +83,18 @@
         <IconButton color="muted" Icon={XIcon} onclick={handleOnCloseBottomSheet} />
     </div>
     <form class="flex w-full flex-col gap-4" onsubmit={preventDefault(handleOnSubmit)}>
-        <div class="flex flex-col gap-1">
-            <label for="name" class="text-sm">Name</label>
-            <input
-                id="name"
-                placeholder="Casernes A PB 1r"
-                class="rounded-xl bg-secondary px-4 py-2 text-black"
-            />
-        </div>
-        <div class="flex flex-col gap-1">
-            <label for="place" class="text-sm">Place</label>
-            <input
-                id="place"
-                placeholder="Girona (Casernes)"
-                class="rounded-xl bg-secondary px-4 py-2 text-black"
-            />
-        </div>
-        <div class="flex flex-col gap-1">
-            <label for="price" class="text-sm">Price</label>
-            <input
-                id="price"
-                placeholder="380000"
-                type="number"
-                class="rounded-xl bg-secondary px-4 py-2 text-black"
-            />
-        </div>
-        <div class="flex flex-col gap-1">
-            <label for="real-state-agency" class="text-sm">Real State Agency</label>
-            <input
-                id="real-state-agency"
-                placeholder="Finques Colomé"
-                class="rounded-xl bg-secondary px-4 py-2 text-black"
-            />
-        </div>
-        <div class="flex flex-col gap-1">
-            <label for="website-url" class="text-sm">Website URL</label>
-            <input
-                id="website-url"
-                placeholder="https://..."
-                class="rounded-xl bg-secondary px-4 py-2 text-black"
-            />
-        </div>
+        <Input label="Name" name="name" id="name" placeholder="Casernes A PB 1r" />
+        <Input label="Place" name="place" id="place" placeholder="Girona (Casernes)" />
+        <Input label="Price" name="price" id="price" placeholder="380000" type="number" />
+        <Input label="M2" name="m2" id="m2" placeholder="100" type="number" />
+        <Select
+            label="Real State Agency"
+            name="agency"
+            id="agency"
+            disabled={!agencies}
+            {options}
+        />
+        <Input label="Website URL" name="website" id="website" placeholder="https://..." />
         <div class="flex justify-between">
             <div class="flex flex-col gap-1">
                 <label for="image-url" class="text-sm">M's rating</label>
@@ -91,11 +110,14 @@
                 type="button"
                 Icon={XIcon}
                 color="secondary"
+                disabled={$mutation.isPending}
                 onclick={handleOnCloseBottomSheet}
             >
                 Cancel
             </TextIconButton>
-            <TextIconButton Icon={SaveIcon} type="submit">Save</TextIconButton>
+            <TextIconButton Icon={SaveIcon} type="submit" disabled={$mutation.isPending}>
+                Save
+            </TextIconButton>
         </div>
     </form>
 </BottomSheet>

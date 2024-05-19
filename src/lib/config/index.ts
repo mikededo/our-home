@@ -1,5 +1,6 @@
 export const Keys = {
-  Appartments: ['appartments']
+  Appartments: ['appartments'],
+  Agencies: ['agencies']
 };
 
 export const QueryKeys = {
