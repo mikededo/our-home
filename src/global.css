@@ -5,7 +5,7 @@
 @layer base {
   /* Hardcoded height/width values */
   :root {
-    --nav-full: 144px;
+    --nav-full: 140px;
     --nav-sm: 96px;
 
     --font-sans: 'Geist';

@@ -5,7 +5,7 @@
     import { AppartmentsList, IconButton } from '$lib/components';
     import { Keys } from '$lib/config';
     import { getAgencies, getAppartments } from '$lib/db';
-    import { AppartmentBottomSheet } from '$lib/domain';
+    import { AppartmentBottomSheet, SearchResults } from '$lib/domain';
 
     import type { PageData } from './$types';
 
@@ -32,4 +32,5 @@
     <AppartmentsList appartments={$appartmentsQuery.data} />
 </div>
 
+<SearchResults appartments={$appartmentsQuery.data} />
 <AppartmentBottomSheet agencies={$agenciesQuery.data} />

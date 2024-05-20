@@ -1,0 +1,6 @@
+export const getEuro = (price: number) =>
+  price.toLocaleString('es-ES', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 0
+  });

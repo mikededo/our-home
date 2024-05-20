@@ -12,11 +12,11 @@
     import { page } from '$app/stores';
     import { IconButton, TextIconButton } from '$lib/components';
     import { QueryKeys, QueryParams } from '$lib/config';
-    import { setSupabaseClient } from '$lib/context';
+    import { initHeader, setSupabaseClient } from '$lib/context';
     import { scrollMainToTop } from '$lib/dom';
+    import { SearchInput, Tabs } from '$lib/domain';
 
     import type { LayoutData } from './$types';
-    import { Tabs } from '$lib/domain';
 
     type Props = { children: Snippet; data: LayoutData };
     let { children, data }: Props = $props();
@@ -24,10 +24,16 @@
 
     // Set the supbase client so that it can be used anywhere in the app
     setSupabaseClient(data.supabaseClient);
+    let headerContext = initHeader();
 
     const handleOnScroll = (e: Event) => {
         const node = e.currentTarget as HTMLElement;
-        hideBar = node.scrollTop > 100;
+
+        if (node.scrollTop > 100 && !headerContext.condensed) {
+            hideBar = true;
+        } else if (node.scrollTop <= 100 && headerContext.condensed) {
+            hideBar = false;
+        }
     };
 
     const handleOnClick = () => {
@@ -37,28 +43,25 @@
     };
 </script>
 
-{#snippet nav()}
+{#snippet header()}
     <header
-        class="flex min-h-24 w-full flex-col items-center bg-primary p-6 pb-2 text-white transition"
+        class="flex min-h-24 w-full flex-col items-center bg-primary p-6 pb-4 text-white transition"
     >
         <div class="container">
             <h1
                 class="header overflow-hidden text-2xl font-bold uppercase"
-                class:collapsed={hideBar}
+                class:condensed={headerContext.condensed}
             >
                 Our future home
             </h1>
-            <input
-                class="mb-1 h-12 w-full rounded-full bg-white px-5 text-black"
-                placeholder="Search an appartment"
-            />
+            <SearchInput />
         </div>
     </header>
 {/snippet}
 
 {#snippet add_button()}
     <div class="fixed bottom-4 left-0 right-0 flex items-center justify-center gap-1">
-        {#if hideBar}
+        {#if headerContext.condensed}
             <div transition:fly={{ x: 50, duration: 200, easing: quadInOut }}>
                 <IconButton
                     Icon={ListFilterIcon}
@@ -89,12 +92,12 @@
 </svelte:head>
 
 <QueryClientProvider client={data.queryClient}>
-    {@render nav()}
+    {@render header()}
     <main
         id="main-content"
         class="overflow-y-auto px-6 pt-4 transition"
-        class:h-main-sm={!hideBar}
-        class:h-main-full={hideBar}
+        class:h-main-sm={!headerContext.condensed}
+        class:h-main-full={headerContext.condensed}
         onscroll={handleOnScroll}
     >
         <Tabs />
@@ -113,7 +116,7 @@
         transition: height 0.2s var(--header-bezier);
     }
 
-    .header.collapsed {
+    .header.condensed {
         height: 0px;
         -webkit-transition: height 0.2s var(--header-bezier);
         transition: height 0.2s var(--header-bezier);

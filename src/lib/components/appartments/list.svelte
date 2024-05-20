@@ -2,6 +2,7 @@
     import { fade } from 'svelte/transition';
 
     import type { Appartments } from '$lib/db';
+    import { getEuro } from '$lib/helpers';
 
     import Skeleton from './skeleton.svelte';
     import Rating from '../rating.svelte';
@@ -9,13 +10,6 @@
 
     type Props = { appartments?: Appartments };
     let { appartments }: Props = $props();
-
-    const getEuro = (price: number) =>
-        price.toLocaleString('es-ES', {
-            style: 'currency',
-            currency: 'EUR',
-            maximumFractionDigits: 0
-        });
 </script>
 
 {#if appartments}
