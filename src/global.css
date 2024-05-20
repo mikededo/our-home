@@ -5,12 +5,8 @@
 @layer base {
   /* Hardcoded height/width values */
   :root {
-    --topbar-height: 64px;
-    --editor-topbar-height: 56px;
-    --editor-aside-width: 320px;
-    --editor-height: calc(
-      calc(100vh - calc(var(--editor-topbar-height) + var(--topbar-height))) - 6px
-    );
+    --nav-full: 144px;
+    --nav-sm: 96px;
 
     --font-sans: 'Geist';
     --font-mono: 'Geist Mono';

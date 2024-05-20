@@ -16,6 +16,7 @@
     import { scrollMainToTop } from '$lib/dom';
 
     import type { LayoutData } from './$types';
+    import { Tabs } from '$lib/domain';
 
     type Props = { children: Snippet; data: LayoutData };
     let { children, data }: Props = $props();
@@ -37,7 +38,9 @@
 </script>
 
 {#snippet nav()}
-    <header class="flex min-h-24 w-full flex-col items-center bg-primary p-6 text-white transition">
+    <header
+        class="flex min-h-24 w-full flex-col items-center bg-primary p-6 pb-2 text-white transition"
+    >
         <div class="container">
             <h1
                 class="header overflow-hidden text-2xl font-bold uppercase"
@@ -46,7 +49,7 @@
                 Our future home
             </h1>
             <input
-                class="h-12 w-full rounded-full bg-white px-5 text-black"
+                class="mb-1 h-12 w-full rounded-full bg-white px-5 text-black"
                 placeholder="Search an appartment"
             />
         </div>
@@ -89,11 +92,12 @@
     {@render nav()}
     <main
         id="main-content"
-        class="overflow-y-auto"
-        class:h-[calc(100dvh_-_144px)]={!hideBar}
-        class:h-[calc(100dvh_-_96px)]={hideBar}
+        class="overflow-y-auto px-6 pt-4 transition"
+        class:h-main-sm={!hideBar}
+        class:h-main-full={hideBar}
         onscroll={handleOnScroll}
     >
+        <Tabs />
         {@render children()}
         {@render add_button()}
     </main>

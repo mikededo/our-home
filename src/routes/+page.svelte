@@ -23,7 +23,7 @@
     });
 </script>
 
-<div class="container px-6 pb-[68px] pt-4">
+<div class="container pb-[68px]">
     <div class="mb-4 flex w-full items-center justify-between gap-1">
         <h2 class="text-lg font-semibold">Appartments list</h2>
         <IconButton Icon={ListFilterIcon} color="muted" size="small" />

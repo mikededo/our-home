@@ -13,6 +13,10 @@ export default {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans]
       },
+      height: {
+        'main-sm': 'calc(100dvh - var(--nav-full))',
+        'main-full': 'calc(100dvh - var(--nav-sm))'
+      },
       // TODO: Add the header variables here
       // height: {
       //   topbar: 'var(--topbar-height)',
