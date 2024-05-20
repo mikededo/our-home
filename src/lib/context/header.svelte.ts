@@ -1,7 +1,7 @@
 import { getContext, setContext } from 'svelte';
 
 const CONTEXT_KEY = 'header';
-let headerState = $state({ condensed: false, focused: true, value: '' });
+let headerState = $state({ condensed: false, focused: false, value: '' });
 
 export const initHeader = () => setContext(CONTEXT_KEY, headerState);
 
