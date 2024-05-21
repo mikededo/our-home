@@ -20,7 +20,6 @@
 
     type Props = { children: Snippet; data: LayoutData };
     let { children, data }: Props = $props();
-    let hideBar = $state(false);
 
     // Set the supbase client so that it can be used anywhere in the app
     setSupabaseClient(data.supabaseClient);
@@ -30,9 +29,9 @@
         const node = e.currentTarget as HTMLElement;
 
         if (node.scrollTop > 100 && !headerContext.condensed) {
-            hideBar = true;
+            headerContext.condensed = true;
         } else if (node.scrollTop <= 100 && headerContext.condensed) {
-            hideBar = false;
+            headerContext.condensed = false;
         }
     };
 
@@ -74,7 +73,7 @@
         <TextIconButton Icon={PlusIcon} color="primary" onclick={handleOnClick} class="z-10">
             New appartment
         </TextIconButton>
-        {#if hideBar}
+        {#if headerContext.condensed}
             <div transition:fly={{ x: -50, duration: 200, easing: quadInOut }}>
                 <IconButton
                     Icon={ArrowUp}
