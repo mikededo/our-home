@@ -11,10 +11,10 @@
 
 <div class="flex flex-row pb-2">
     {#if $page.url.pathname !== '/'}
-        <button class="flex items-center gap-2">
+        <a href="/" class="flex items-center gap-2">
             <MoveLeftIcon size={18} />
             <span class="text-sm font-semibold">Back</span>
-        </button>
+        </a>
     {/if}
     {#each tabs as { name, path }, i (i)}
         {#if $page.url.pathname !== path}
