@@ -77,6 +77,18 @@ export type Database = {
           }
         ];
       };
+      pwd: {
+        Row: {
+          pwd: string;
+        };
+        Insert: {
+          pwd: string;
+        };
+        Update: {
+          pwd?: string;
+        };
+        Relationships: [];
+      };
       real_state_agency: {
         Row: {
           id: number;

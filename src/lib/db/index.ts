@@ -40,3 +40,8 @@ export const getAgenciesQuery = (client: Client) => client.from('real_state_agen
 export const getAgencies = async (client: Client) => (await getAgenciesQuery(client)).data;
 export type Agencies = Result<typeof getAgencies>;
 export type Agency = NonNullable<Agencies>[number];
+
+export const checkAccessQuery = (client: Client, password: string) =>
+  client.from('pwd').select('*', { count: 'exact', head: true }).eq('pwd', password);
+export const checkAccess = async (client: Client, password: string) =>
+  (await checkAccessQuery(client, password)).count;

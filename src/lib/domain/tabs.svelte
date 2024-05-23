@@ -9,9 +9,9 @@
     ];
 </script>
 
-<div class="flex flex-row pb-2">
+<div class="container flex flex-row pb-2 md:py-2">
     {#if $page.url.pathname !== '/'}
-        <a href="/" class="flex items-center gap-2">
+        <a href="/" class="flex h-[22px] items-center gap-2">
             <MoveLeftIcon size={18} />
             <span class="text-sm font-semibold">Back</span>
         </a>
