@@ -1,18 +1,20 @@
 <script lang="ts">
     import '../global.css';
 
-    import { QueryClientProvider } from '@tanstack/svelte-query';
+    import { QueryClientProvider, createMutation } from '@tanstack/svelte-query';
     import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
-    import { ArrowUp, ListFilterIcon, PlusIcon } from 'lucide-svelte';
+    import { ArrowUp, KeyIcon, ListFilterIcon, PlusIcon } from 'lucide-svelte';
     import type { Snippet } from 'svelte';
     import { quadInOut } from 'svelte/easing';
-    import { fly } from 'svelte/transition';
+    import { fade, fly } from 'svelte/transition';
 
+    import { dev } from '$app/environment';
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
-    import { IconButton, TextIconButton } from '$lib/components';
+    import { IconButton, Input, TextIconButton } from '$lib/components';
     import { QueryKeys, QueryParams } from '$lib/config';
     import { initHeader, setSupabaseClient } from '$lib/context';
+    import { checkAccess } from '$lib/db';
     import { scrollMainToTop } from '$lib/dom';
     import { SearchInput, Tabs } from '$lib/domain';
 
@@ -24,6 +26,27 @@
     // Set the supbase client so that it can be used anywhere in the app
     setSupabaseClient(data.supabaseClient);
     let headerContext = initHeader();
+
+    let hasAccess = $state(dev);
+    let input = $state('');
+    let isWrong = $state(false);
+
+    const accessMutation = createMutation(
+        {
+            mutationFn: (password: string) => checkAccess(data.supabaseClient, password),
+            onSuccess: (count) => {
+                hasAccess = count === 1;
+                isWrong = count !== 1;
+            }
+        },
+        data.queryClient
+    );
+
+    const handleOnKeyPress = $derived((e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            $accessMutation.mutate(input);
+        }
+    });
 
     const handleOnScroll = (e: Event) => {
         const node = e.currentTarget as HTMLElement;
@@ -86,23 +109,45 @@
     </div>
 {/snippet}
 
+{#snippet login()}
+    <div class="fixed inset-0 z-50 flex justify-center bg-primary" out:fade={{ duration: 200 }}>
+        <div class="container flex w-full flex-col items-center justify-center gap-4 px-8 md:w-1/4">
+            <div class="flex items-center gap-2">
+                <KeyIcon class="stroke-white" />
+                <h2 class="text-lg font-semibold text-white">What's the code, huh?</h2>
+            </div>
+            <Input
+                placeholder="A very secret code"
+                type="password"
+                onkeypress={handleOnKeyPress}
+                invalid={isWrong}
+                bind:value={input}
+            />
+        </div>
+    </div>
+{/snippet}
+
 <svelte:head>
     <title>🏡 Our future home</title>
 </svelte:head>
 
 <QueryClientProvider client={data.queryClient}>
-    {@render header()}
-    <main
-        id="main-content"
-        class="overflow-y-auto px-6 pt-4 transition"
-        class:h-main-sm={!headerContext.condensed}
-        class:h-main-full={headerContext.condensed}
-        onscroll={handleOnScroll}
-    >
-        <Tabs />
-        {@render children()}
-        {@render add_button()}
-    </main>
+    {#if !hasAccess}
+        {@render login()}
+    {:else}
+        {@render header()}
+        <main
+            id="main-content"
+            class="overflow-y-auto px-6 pt-4 transition"
+            class:h-main-sm={!headerContext.condensed}
+            class:h-main-full={headerContext.condensed}
+            onscroll={handleOnScroll}
+        >
+            <Tabs />
+            {@render children()}
+            {@render add_button()}
+        </main>
+    {/if}
     <SvelteQueryDevtools buttonPosition="top-right" />
 </QueryClientProvider>
 

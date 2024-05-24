@@ -8,6 +8,10 @@ declare global {
   namespace App {
     interface Locals {
       supabase: ReturnType<typeof createServerClient<Database>>;
+      auth: {
+        isAuthenticated: boolean;
+        onAuthenticate: () => void;
+      };
     }
 
     // interface Error {}
