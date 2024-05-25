@@ -2,17 +2,15 @@
     import { createMutation, useQueryClient } from '@tanstack/svelte-query';
     import { SaveIcon, XIcon } from 'lucide-svelte';
 
-    import { goto } from '$app/navigation';
-    import { page } from '$app/stores';
     import {
         BottomSheet,
-        IconButton,
         Input,
         RatingSelector,
         Select,
-        TextIconButton
+        TextIconButton,
+        onCloseBottomSheet
     } from '$lib/components';
-    import { Keys, QueryKeys } from '$lib/config';
+    import { Keys } from '$lib/config';
     import { getSupabaseClient } from '$lib/context';
     import type { Agencies, AppartmentData, Appartments } from '$lib/db';
     import { createAppartment } from '$lib/db';
@@ -41,7 +39,7 @@
                 queryClient.setQueryData(Keys.Appartments, [...data, ...appartments]);
             }
 
-            handleOnCloseBottomSheet();
+            onCloseBottomSheet();
             scrollMainToTop();
         }
     });
@@ -52,12 +50,6 @@
         } else {
             jRating = i + 1;
         }
-    };
-
-    const handleOnCloseBottomSheet = () => {
-        const params = new URLSearchParams($page.url.searchParams);
-        params.delete(QueryKeys.bottomSheet);
-        goto(`?${params.toString()}`);
     };
 
     const handleOnSubmit = (e: SubmitEvent) => {
@@ -77,11 +69,12 @@
     };
 </script>
 
-<BottomSheet param="addAppartment">
-    <div class="mb-3 flex items-center justify-between">
-        <h3 class="text-lg font-semibold">Create an appartment</h3>
-        <IconButton color="muted" Icon={XIcon} onclick={handleOnCloseBottomSheet} />
-    </div>
+<BottomSheet
+    param="addAppartment"
+    header="Create an appartment"
+    onBackdropClick={onCloseBottomSheet}
+    onClose={onCloseBottomSheet}
+>
     <form class="flex w-full flex-col gap-4" onsubmit={preventDefault(handleOnSubmit)}>
         <Input label="Name" name="name" id="name" placeholder="Casernes A PB 1r" />
         <Input label="Place" name="place" id="place" placeholder="Girona (Casernes)" />
@@ -111,7 +104,7 @@
                 Icon={XIcon}
                 color="secondary"
                 disabled={$mutation.isPending}
-                onclick={handleOnCloseBottomSheet}
+                onclick={onCloseBottomSheet}
             >
                 Cancel
             </TextIconButton>

@@ -3,10 +3,10 @@
     import { ListFilterIcon } from 'lucide-svelte';
     import { fade } from 'svelte/transition';
 
-    import { AppartmentsList, IconButton } from '$lib/components';
+    import { AppartmentsList, IconButton, onOpenBottomSheet } from '$lib/components';
     import { Keys } from '$lib/config';
     import { getAgencies, getAppartments } from '$lib/db';
-    import { AppartmentBottomSheet, SearchResults } from '$lib/domain';
+    import { AppartmentBottomSheet, FiltersBottomSheet, SearchResults } from '$lib/domain';
 
     import type { PageData } from './$types';
 
@@ -31,7 +31,12 @@
 <div class="container pb-[68px]" in:fade={{ duration: 200 }}>
     <div class="mb-4 flex w-full items-center justify-between gap-1">
         <h2 class="text-lg font-semibold">Appartments list</h2>
-        <IconButton Icon={ListFilterIcon} color="muted" size="small" />
+        <IconButton
+            Icon={ListFilterIcon}
+            color="muted"
+            size="small"
+            onclick={onOpenBottomSheet('filters')}
+        />
     </div>
 
     <AppartmentsList appartments={$appartmentsQuery.data} />
@@ -39,3 +44,4 @@
 
 <SearchResults appartments={$appartmentsQuery.data} />
 <AppartmentBottomSheet agencies={$agenciesQuery.data} />
+<FiltersBottomSheet agencies={$agenciesQuery.data} />

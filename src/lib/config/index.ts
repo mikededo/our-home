@@ -4,12 +4,22 @@ export const Keys = {
 };
 
 export const QueryKeys = {
-  bottomSheet: 'bottom-view'
+  bottomSheet: 'bottom-view',
+  // Filters
+  priceRange: 'price-range',
+  mRating: 'm-rating',
+  jRating: 'j-rating',
+  realStateAgency: 'real-state-agency'
 };
 export const QueryParams = {
   bottomSheet: {
     addAppartment: 'add-appartment',
-    editAppartment: 'edit-appartment'
+    editAppartment: 'edit-appartment',
+    filters: 'filters'
   }
 } as const;
-export type Params<T extends keyof typeof QueryKeys> = keyof (typeof QueryParams)[T];
+type Parametrized = Exclude<
+  keyof typeof QueryKeys,
+  'priceRange' | 'mRating' | 'jRating' | 'realStateAgency'
+>;
+export type Params<T extends Parametrized> = keyof (typeof QueryParams)[T];

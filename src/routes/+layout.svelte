@@ -9,10 +9,7 @@
     import { fade, fly } from 'svelte/transition';
 
     import { dev } from '$app/environment';
-    import { goto } from '$app/navigation';
-    import { page } from '$app/stores';
-    import { IconButton, Input, TextIconButton } from '$lib/components';
-    import { QueryKeys, QueryParams } from '$lib/config';
+    import { IconButton, Input, TextIconButton, onOpenBottomSheet } from '$lib/components';
     import { initHeader, setSupabaseClient } from '$lib/context';
     import { checkAccess } from '$lib/db';
     import { scrollMainToTop } from '$lib/dom';
@@ -57,12 +54,6 @@
             headerContext.condensed = false;
         }
     };
-
-    const handleOnClick = () => {
-        const params = new URLSearchParams($page.url.searchParams);
-        params.set(QueryKeys.bottomSheet, QueryParams.bottomSheet.addAppartment);
-        goto(`?${params.toString()}`);
-    };
 </script>
 
 {#snippet header()}
@@ -87,13 +78,18 @@
             <div transition:fly={{ x: 50, duration: 200, easing: quadInOut }}>
                 <IconButton
                     Icon={ListFilterIcon}
-                    onclick={handleOnClick}
+                    onclick={onOpenBottomSheet('filters')}
                     color="secondary"
                     size="small"
                 />
             </div>
         {/if}
-        <TextIconButton Icon={PlusIcon} color="primary" onclick={handleOnClick} class="z-10">
+        <TextIconButton
+            Icon={PlusIcon}
+            color="primary"
+            onclick={onOpenBottomSheet('addAppartment')}
+            class="z-10"
+        >
             New appartment
         </TextIconButton>
         {#if headerContext.condensed}

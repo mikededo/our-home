@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss';
 import { fontFamily } from 'tailwindcss/defaultTheme';
+import plugin from 'tailwindcss/plugin';
 
 export default {
   content: ['./src/**/*.html', './src/**/*.svelte', './src/**/*.ts'],
@@ -17,12 +18,6 @@ export default {
         'main-sm': 'calc(100dvh - var(--nav-full))',
         'main-full': 'calc(100dvh - var(--nav-sm))'
       },
-      // TODO: Add the header variables here
-      // height: {
-      //   topbar: 'var(--topbar-height)',
-      //   'editor-topbar': 'var(--editor-topbar-height)',
-      //   editor: 'var(--editor-height)'
-      // },
       borderColor: {
         DEFAULT: 'var(--border)'
       },
@@ -128,5 +123,14 @@ export default {
       sm: 'calc(0.5rem - 4px)',
       full: '9999px'
     }
-  }
+  },
+  plugins: [
+    plugin(function ({ addVariant, matchUtilities, theme }) {
+      addVariant('hocus', ['&:hover', '&:focus']);
+      matchUtilities(
+        { square: (value) => ({ width: value, height: value }) },
+        { values: theme('spacing') }
+      );
+    })
+  ]
 } satisfies Config;
