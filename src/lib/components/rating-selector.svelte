@@ -1,13 +1,15 @@
 <script lang="ts">
-    import { CatIcon } from 'lucide-svelte';
+    import { CatIcon, StarIcon } from 'lucide-svelte';
     import { twMerge } from 'tailwind-merge';
 
+    import {} from './input';
+
     type Props = {
+        label?: string;
         rating: number;
-        right?: boolean;
         onUpdateRating: (i: number) => void;
     };
-    let { rating, right, onUpdateRating }: Props = $props();
+    let { label, rating, onUpdateRating }: Props = $props();
 
     let getClasses = $derived((i: number) =>
         twMerge('transition-colors', rating > i ? 'stroke-primary' : 'stroke-secondary-300')
@@ -18,10 +20,21 @@
     };
 </script>
 
-<div class="flex items-center gap-2" class:flex-row-reverse={right}>
-    {#each { length: 5 } as _, i}
-        <button type="button" onclick={handleOnUpdateRating(i)}>
-            <CatIcon size={20} class={getClasses(i)} />
-        </button>
-    {/each}
+<div class="flex flex-col gap-2">
+    {#if label}
+        <p class="text-xs font-semibold uppercase">{label}</p>
+    {/if}
+    <div class="flex items-center gap-2">
+        {#each { length: 6 } as _, i}
+            {#if i < 5}
+                <button type="button" onclick={handleOnUpdateRating(i)}>
+                    <CatIcon size={24} class={getClasses(i)} />
+                </button>
+            {:else}
+                <button type="button" onclick={handleOnUpdateRating(i)}>
+                    <StarIcon size={24} class={getClasses(i)} />
+                </button>
+            {/if}
+        {/each}
+    </div>
 </div>

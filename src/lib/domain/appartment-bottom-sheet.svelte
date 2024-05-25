@@ -95,16 +95,16 @@
             {options}
         />
         <Input label="Website URL" name="website" id="website" placeholder="https://..." />
-        <div class="flex justify-between">
-            <div class="flex flex-col gap-1">
-                <label for="image-url" class="text-sm">M's rating</label>
-                <RatingSelector rating={mRating} onUpdateRating={handleOnUpdateRating('m')} />
-            </div>
-            <div class="flex flex-col gap-1">
-                <label for="image-url" class="text-right text-sm">J's rating</label>
-                <RatingSelector rating={jRating} onUpdateRating={handleOnUpdateRating('j')} right />
-            </div>
-        </div>
+        <RatingSelector
+            label="M's rating"
+            rating={mRating}
+            onUpdateRating={handleOnUpdateRating('m')}
+        />
+        <RatingSelector
+            label="J's rating"
+            rating={jRating}
+            onUpdateRating={handleOnUpdateRating('j')}
+        />
         <div class="mt-3 flex items-center justify-end gap-2">
             <TextIconButton
                 type="button"

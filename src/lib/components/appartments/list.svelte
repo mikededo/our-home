@@ -25,8 +25,8 @@
                     <p>{aptm.real_state_agency?.name}</p>
                 </div>
                 <div class="flex w-full items-center justify-between">
-                    <Rating text="M's rating" rating={aptm?.m_rating} />
-                    <Rating text="J's rating" rating={aptm?.j_rating} right />
+                    <Rating text="J's rating" rating={aptm?.j_rating} />
+                    <Rating text="M's rating" rating={aptm?.m_rating} right />
                 </div>
 
                 <TagList tags={aptm.tags} />
