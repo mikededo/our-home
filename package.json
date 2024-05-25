@@ -52,7 +52,7 @@
   "type": "module",
   "dependencies": {
     "@supabase/ssr": "0.3.0",
-    "@supabase/supabase-js": "2.43.2",
+    "@supabase/supabase-js": "2.43.4",
     "@tanstack/svelte-query": "5.36.1",
     "@tanstack/svelte-query-devtools": "5.36.1",
     "lucide-svelte": "0.350.0",
