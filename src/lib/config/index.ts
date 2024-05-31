@@ -1,5 +1,6 @@
 export const Keys = {
   Appartments: ['appartments'],
+  FilteredAppartments: (filters?: string) => (filters ? ['appartments', filters] : ['appartments']),
   Agencies: ['agencies']
 };
 

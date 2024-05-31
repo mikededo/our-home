@@ -7,8 +7,9 @@
     type Props = HTMLSelectAttributes & {
         options: Record<string, string>;
         label?: string;
+        initialValue?: string;
     };
-    let { options, label, name, ...restProps }: Props = $props();
+    let { options, label, name, initialValue, ...restProps }: Props = $props();
     let classes = inputClasses({ className: restProps.class });
 </script>
 
@@ -21,7 +22,7 @@
             {name}
             class="{classes} appearance-none"
             {...restProps}
-            value={Object.keys(options)[0]}
+            value={initialValue ?? Object.keys(options)[0]}
         >
             {#each Object.entries(options) as [key, value]}
                 <option value={key}>{value}</option>

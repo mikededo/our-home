@@ -2,6 +2,8 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 
 import type { Database } from '$lib/types';
 
+export const DEFAULT_NONE_AGENCY_ID = 1;
+
 export type Client = SupabaseClient<Database>;
 type Result<T extends (...args: any) => any> = Awaited<ReturnType<T>>;
 
@@ -10,6 +12,34 @@ export const getAppartmentsQuery = (client: Client) =>
 export const getAppartments = async (client: Client) => (await getAppartmentsQuery(client)).data;
 export type Appartments = Result<typeof getAppartments>;
 export type Appartment = NonNullable<Appartments>[number];
+
+export type AppartmentFilters = {
+  priceRange?: [min: number, max: number];
+  mRating?: number;
+  jRating?: number;
+  realStateAgency?: number;
+};
+export const getFilteredAppartmentsQuery = (client: Client, filters: AppartmentFilters) => {
+  const query = client.from('house').select('*, real_state_agency(*), tags:tag(*)');
+  if (filters.priceRange) {
+    query.gte('price', filters.priceRange[0]).lte('price', filters.priceRange[1]);
+  }
+  if (filters.mRating) {
+    query.gte('m_rating', filters.mRating);
+  }
+  if (filters.jRating) {
+    query.gte('m_rating', filters.mRating);
+  }
+  if (filters.realStateAgency) {
+    query.eq('real_state_agency_id', filters.realStateAgency);
+  }
+
+  return query;
+};
+export const getFilteredAppartments = async (
+  client: Client,
+  filters: AppartmentFilters
+): Promise<Appartments> => (await getFilteredAppartmentsQuery(client, filters)).data;
 
 export type AppartmentData = {
   name: string;
@@ -25,13 +55,7 @@ export const createAppartment = async (client: Client, { rating, ...data }: Appa
   (
     await client
       .from('house')
-      .insert([
-        {
-          ...data,
-          m_rating: rating[0],
-          j_rating: rating[1]
-        }
-      ])
+      .insert([{ ...data, m_rating: rating[0], j_rating: rating[1] }])
       .select()
       .throwOnError()
   ).data;
