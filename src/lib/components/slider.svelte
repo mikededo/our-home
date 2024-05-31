@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { type CreateSliderProps, createSlider, melt } from '@melt-ui/svelte';
-    import type { Action } from 'svelte/action';
+    import { createSlider, melt } from '@melt-ui/svelte';
 
     import { getEuro } from '$lib/helpers';
 
@@ -10,32 +9,14 @@
         step?: number;
         label?: string;
         defaultValue?: number[];
-        onValueChange?: CreateSliderProps['onValueChange'];
-        onChangesCommited?: (value: number[]) => void;
+        onValueCommitted?: (value: number[]) => void;
     };
-    let { min, max, label, step, defaultValue, onValueChange, onChangesCommited }: Props = $props();
+    let { min, max, label, step, defaultValue, onValueCommitted }: Props = $props();
 
     const {
         elements: { root, range, thumbs },
         states: { value: internalValue }
-    } = createSlider({ defaultValue, min, max, step, onValueChange });
-
-    const createOnChangesCommited = (node: HTMLSpanElement) => (event: PointerEvent) => {
-        if (event.target === node) {
-            onChangesCommited?.($internalValue);
-        }
-    };
-
-    const changeCommited: Action<HTMLSpanElement> = (node) => {
-        const event = createOnChangesCommited(node);
-        document.addEventListener('pointerup', event);
-
-        return {
-            destroy: () => {
-                document.removeEventListener('pointerup', event);
-            }
-        };
-    };
+    } = createSlider({ defaultValue, min, max, step, onValueCommitted });
 </script>
 
 <div use:melt={$root} class="relative flex w-full flex-col gap-1">
@@ -50,7 +31,6 @@
         {#each $thumbs as thumb}
             <span
                 use:melt={thumb}
-                use:changeCommited
                 class="size-4 rounded-full bg-primary outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             ></span>
         {/each}

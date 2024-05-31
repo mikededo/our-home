@@ -30,7 +30,7 @@ export const getFilteredAppartmentsQuery = (client: Client, filters: AppartmentF
   if (filters.jRating) {
     query.gte('m_rating', filters.mRating);
   }
-  if (filters.realStateAgency) {
+  if (filters.realStateAgency && filters.realStateAgency !== DEFAULT_NONE_AGENCY_ID) {
     query.eq('real_state_agency_id', filters.realStateAgency);
   }
 

@@ -50,7 +50,7 @@
             {#if matches.length > 0}({matches.length}){/if}
         </h2>
         {#if matches.length}
-            <div class=" flex flex-col gap-[1px]">
+            <div class="flex flex-col gap-[1px]">
                 {#each matches as { html, appartment }}
                     <div
                         class="flex cursor-pointer flex-col gap-1 px-6 py-2 transition hover:bg-secondary"

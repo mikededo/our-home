@@ -1,8 +1,8 @@
 <script lang="ts">
     import { CatIcon, StarIcon, XIcon } from 'lucide-svelte';
+    import { fade } from 'svelte/transition';
     import { twMerge } from 'tailwind-merge';
 
-    import {} from './input';
     import IconButton from './icon-button.svelte';
 
     type Props = {
@@ -26,7 +26,7 @@
     {#if label}
         <p class="text-xs font-semibold uppercase">{label}</p>
     {/if}
-    <div class="flex w-full justify-between">
+    <div class="flex h-8 w-full justify-between">
         <div class="flex items-center gap-2">
             {#each { length: 6 } as _, i}
                 {#if i < 5}
@@ -40,8 +40,10 @@
                 {/if}
             {/each}
         </div>
-        {#if onClearRating}
-            <IconButton Icon={XIcon} color="muted" onclick={onClearRating} size="small" />
+        {#if onClearRating && rating > 0}
+            <div transition:fade={{ duration: 150 }}>
+                <IconButton Icon={XIcon} color="muted" onclick={onClearRating} size="small" />
+            </div>
         {/if}
     </div>
 </div>

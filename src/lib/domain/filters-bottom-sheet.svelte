@@ -38,7 +38,7 @@
         hasChanged = false;
     };
 
-    const handleOnPriceRangeChange = (value: number[]) => {
+    const handleOnValueCommitted = (value: number[]) => {
         if (value[0] === Filters.PRICE_RANGE_MIN && value[1] === Filters.PRICE_RANGE_MAX) {
             Filters.remove('priceRange');
         } else {
@@ -46,7 +46,6 @@
         }
 
         hasChanged = true;
-        return value;
     };
 
     const handleOnUpdateRating = (rating: 'm' | 'j') => (i: number) => {
@@ -100,7 +99,7 @@
             min={Filters.PRICE_RANGE_MIN}
             max={Filters.PRICE_RANGE_MAX}
             step={Filters.PRICE_RANGE_STEP}
-            onChangesCommited={handleOnPriceRangeChange}
+            onValueCommitted={handleOnValueCommitted}
         />
         <Select
             label="Real State Agency"

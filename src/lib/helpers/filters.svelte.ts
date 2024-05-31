@@ -3,7 +3,7 @@ import { get } from 'svelte/store';
 import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 import { QueryKeys } from '$lib/config';
-import type { AppartmentFilters } from '$lib/db';
+import { type AppartmentFilters, DEFAULT_NONE_AGENCY_ID } from '$lib/db';
 
 export const PRICE_RANGE_MIN = 0;
 export const PRICE_RANGE_MAX = 1_000_000;
@@ -46,8 +46,7 @@ export const reset = (params: URLSearchParams, state: Required<AppartmentFilters
     result,
     QueryKeys.realStateAgency,
     state.realStateAgency,
-    // Agency with id 1 is the default value
-    state.realStateAgency === 1
+    state.realStateAgency === DEFAULT_NONE_AGENCY_ID
   );
   result = deleteOrSet(result, QueryKeys.mRating, state.mRating, state.mRating > 0);
   result = deleteOrSet(result, QueryKeys.jRating, state.jRating, state.jRating > 0);
@@ -69,7 +68,7 @@ export const filters = (params: URLSearchParams): Required<AppartmentFilters> =>
 
   const result = {
     priceRange: [PRICE_RANGE_MIN, PRICE_RANGE_MAX] as [number, number],
-    realStateAgency: realStateAgency ? +realStateAgency : 0,
+    realStateAgency: realStateAgency ? +realStateAgency : DEFAULT_NONE_AGENCY_ID,
     mRating: mRating ? +mRating : 0,
     jRating: jRating ? +jRating : 0
   };
@@ -87,7 +86,7 @@ export const count = (params: URLSearchParams) => {
 
   return (
     (priceRange[0] === PRICE_RANGE_MIN && priceRange[1] === PRICE_RANGE_MAX ? 0 : 1) +
-    (realStateAgency ? 1 : 0) +
+    (realStateAgency && realStateAgency !== DEFAULT_NONE_AGENCY_ID ? 1 : 0) +
     (mRating > 0 ? 1 : 0) +
     (jRating > 0 ? 1 : 0)
   );
