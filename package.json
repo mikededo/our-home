@@ -53,8 +53,8 @@
   "dependencies": {
     "@supabase/ssr": "0.3.0",
     "@supabase/supabase-js": "2.43.4",
-    "@tanstack/svelte-query": "5.40.1",
-    "@tanstack/svelte-query-devtools": "5.40.1",
+    "@tanstack/svelte-query": "5.40.3",
+    "@tanstack/svelte-query-devtools": "5.40.3",
     "lucide-svelte": "0.350.0",
     "tailwind-merge": "2.3.0"
   }
