@@ -38,7 +38,7 @@
     "lint-staged": "15.2.7",
     "postcss": "8.4.38",
     "prettier": "3.2.5",
-    "prettier-plugin-svelte": "3.2.4",
+    "prettier-plugin-svelte": "3.2.5",
     "prettier-plugin-tailwindcss": "0.6.5",
     "svelte": "5.0.0-next.160",
     "svelte-check": "3.8.1",
