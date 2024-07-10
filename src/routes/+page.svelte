@@ -72,7 +72,10 @@
         </div>
     </div>
 
-    <AppliedFilters />
+    {#if $agenciesQuery.data}
+        <AppliedFilters agencies={$agenciesQuery.data} />
+    {/if}
+
     {#if $appartmentsQuery.isLoading}
         <AppartmentsSkeleton />
     {:else if $appartmentsQuery.isError}
@@ -81,9 +84,9 @@
         {#if $appartmentsQuery.data.length}
             <AppartmentsList appartments={$appartmentsQuery.data} />
         {:else}
-            <ErrorBanner Icon={SquirrelIcon}
-                >No results found! Try changing the filters or performing a different search!</ErrorBanner
-            >
+            <ErrorBanner Icon={SquirrelIcon}>
+                No results found! Try changing the filters or performing a different search!
+            </ErrorBanner>
         {/if}
     {/if}
 </div>

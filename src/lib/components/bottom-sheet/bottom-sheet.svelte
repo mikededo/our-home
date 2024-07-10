@@ -1,7 +1,7 @@
 <script lang="ts">
     import { XIcon } from 'lucide-svelte';
     import type { Snippet } from 'svelte';
-    import { sineInOut } from 'svelte/easing';
+    import { cubicOut } from 'svelte/easing';
     import { fade, slide } from 'svelte/transition';
 
     import { page } from '$app/stores';
@@ -38,7 +38,7 @@
         ></div>
         <div
             class="overlflow-hidden fixed bottom-0 left-0 right-0 z-[51] max-h-[90vh] rounded-t-2xl bg-white transition"
-            transition:slide={{ axis: 'y', duration: 300, easing: sineInOut }}
+            transition:slide={{ axis: 'y', duration: 250, easing: cubicOut }}
         >
             <div class="px-6 py-4">
                 <div class="mb-3 flex items-center justify-between">
