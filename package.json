@@ -52,10 +52,10 @@
   "type": "module",
   "dependencies": {
     "@supabase/ssr": "0.4.0",
-    "@supabase/supabase-js": "2.44.2",
-    "@tanstack/svelte-query": "5.49.1",
-    "@tanstack/svelte-query-devtools": "5.49.1",
-    "lucide-svelte": "0.399.0",
-    "tailwind-merge": "2.3.0"
+    "@supabase/supabase-js": "2.45.1",
+    "@tanstack/svelte-query": "5.51.21",
+    "@tanstack/svelte-query-devtools": "5.51.21",
+    "lucide-svelte": "0.427.0",
+    "tailwind-merge": "2.4.0"
   }
 }
